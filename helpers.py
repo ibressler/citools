@@ -9,10 +9,15 @@ import sys, os
 import requests # for HTTP requests
 import json
 
-def assertEnvVarExists(varname, purpose=""):
-    if varname not in os.environ:
-        print(f"No {purpose} ('{varname}' environment variable) provided!")
-        sys.exit(1)
+def assertEnvVarExists(varname, purpose=None):
+    if varname in os.environ:
+        return True
+    item = f"'{varname}' environment variable"
+    if purpose is not None:
+        print(f"No {purpose} provided ({item})!")
+    else:
+        print(f"No {item} provided!")
+    sys.exit(1)
 
 def makeRequest(method, baseurl, path, verbose=False, **kwargs):
     """Sends a web API request with the given path and method from python requests module."""
