@@ -13,7 +13,7 @@ import argparse
 from requests import get, delete # for HTTP requests
 from dateutil.parser import parse as dateutil_parse
 from operator import itemgetter
-from citools.helpers import makeRequest, assertEnvVarExists
+from helpers import makeRequest, assertEnvVarExists
 
 parser = argparse.ArgumentParser(description='Remove old AppVeyor builds.')
 parser.add_argument('buildsToKeep', metavar='N', type=int, default=20,
