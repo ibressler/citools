@@ -39,7 +39,7 @@ if code != 200:
     print("Could not get build history! Stopping.")
     sys.exit(1)
 
-jsonPrettyPrint(response) # for debugging
+#jsonPrettyPrint(response) # for debugging
 builds = [(build['buildId'], dateutil_parse(build['finished']))
             for build in response['builds'] if 'finished' in build]
 builds.sort(key=itemgetter(-1))

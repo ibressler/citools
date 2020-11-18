@@ -8,6 +8,10 @@
 import sys, os
 import requests # for HTTP requests
 import json
+try:
+    from simplejson.errors import JSONDecodeError
+except ImportError:
+    from json.decoder import JSONDecodeError
 
 def assertEnvVarExists(varname, purpose=None):
     if varname in os.environ:
@@ -29,7 +33,7 @@ def makeRequest(method, baseurl, path, verbose=False, **kwargs):
         print(" ", "Status:", response.status_code)
     try:
         return response.json(), response.status_code
-    except json.decoder.JSONDecodeError:
+    except JSONDecodeError:
         return response, response.status_code
 
 def jsonPrettyPrint(parsed, **kwargs):
