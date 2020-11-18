@@ -40,7 +40,8 @@ if code != 200:
     sys.exit(1)
 
 jsonPrettyPrint(response) # for debugging
-builds = [(build['buildId'], dateutil_parse(build['finished'])) for build in response['builds']]
+builds = [(build['buildId'], dateutil_parse(build['finished']))
+            for build in response['builds'] if 'finished' in build]
 builds.sort(key=itemgetter(-1))
 print(f"Found {len(builds)} builds.")
 for buildId, finished in builds[:3]: #[:-args.buildsToKeep] # keep the newest <buildsToKeep>
