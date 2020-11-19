@@ -46,8 +46,8 @@ builds.sort(key=itemgetter(-1))
 print(f"Found {len(builds)} builds.")
 for buildId, finished in builds[:3]: #[:-args.buildsToKeep] # keep the newest <buildsToKeep>
     print(f"Deleting buildId {buildId} finished at {finished.isoformat()}:", end=" ")
-    response, code = makeRequest(delete, baseurl, f"/account/{accountName}/builds/{buildId}",
+    response, code = makeRequest(delete, baseurl, f"/account/{accountName}/api/builds/{buildId}",
                                  headers=authHead, verbose=args.verbose)
-    print("OK" if code == 204 else "{code} != 204!")
+    print("OK" if code == 204 else f"{code} != 204!")
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
