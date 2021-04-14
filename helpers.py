@@ -27,7 +27,7 @@ def makeRequest(method, baseurl, path, verbose=False, **kwargs):
     """Sends a web API request with the given path and method from python requests module."""
     url = baseurl + path
     if verbose:
-        print(method, url)
+        print(method, url, kwargs, type(url))
     response = method(url, **kwargs)
     if verbose:
         print(" ", "Status:", response.status_code)
@@ -38,5 +38,48 @@ def makeRequest(method, baseurl, path, verbose=False, **kwargs):
 
 def jsonPrettyPrint(parsed, **kwargs):
     print(json.dumps(parsed, indent=2, sort_keys=True), **kwargs)
+
+import hashlib
+def sha256(filename):
+    algo = hashlib.sha256()
+    blkSize = 100*1024 # 100 KiB
+    with open(filename, 'rb') as fd:
+        # Read and update hash block wise
+        for blk in iter(lambda: fd.read(blkSize), b""):
+            algo.update(blk)
+    return algo.hexdigest()
+
+class UploadWithProgress:
+    """Provides an iterator for uploading files in chunks to allow progress tracking.
+    For use with the *data* argument of a request."""
+
+    @staticmethod
+    def printProgress(ratio):
+        if ratio is not None:
+            print(f"{ratio*100:7.1f} %")
+
+    def __init__(self, filename, chunksize=5*1024*1024,
+                 callback=printProgress.__func__):
+        self.filename = filename
+        self.chunksize = chunksize
+        self.totalsize = filename.stat().st_size # assuming pathlib.Path
+        self.callback = callback
+        self.readsofar = 0
+
+    def __iter__(self):
+        with open(self.filename, 'rb') as fd:
+            while True:
+                data = fd.read(self.chunksize)
+                if not data:
+                    if callable(self.callback):
+                        self.callback(None)
+                    break
+                self.readsofar += len(data)
+                if callable(self.callback):
+                    self.callback(self.readsofar / self.totalsize)
+                yield data
+
+    def __len__(self):
+        return self.totalsize
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
