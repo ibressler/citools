@@ -36,7 +36,7 @@ def uploadFile(filepath):
 
     baseurl = "https://upload.cloudsmith.io"
     response, code = makeRequest(put, baseurl, f"/{org}/{repo}/{filepath.name}",
-         data=UploadWithProgress(filepath, chunksize=1024*1024),
+         data=UploadWithProgress(filepath),
          headers=dict({"Content-Sha256": chksum}, **headers))
     print("  Status:", code)
     identifier = response.get("identifier", None)
