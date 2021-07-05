@@ -59,7 +59,11 @@ def uploadFile(filepath):
     response, code = makeRequest(post, baseurl, f"/packages/{org}/{repo}/upload/raw/", json=payload, headers=headers)
     #print(" ", response, "Status:", code)
     print("  Status:", code)
-    print(f"  Available at {response.get('self_html_url', '')}")
+    try:
+        print(f"  Available at {response.get['self_html_url']}")
+        raise # for testing
+    except (AttributeError, IndexError):
+        print(response)
 
     print(prefix, "Done.")
 
