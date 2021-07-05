@@ -60,7 +60,7 @@ def uploadFile(filepath):
     #print(" ", response, "Status:", code)
     print("  Status:", code)
     try:
-        print(f"  Available at {response.get['self_html_url']}")
+        print(f"  Available at {response['self_html_url']}")
         raise # for testing
     except (AttributeError, IndexError):
         print(response)
