@@ -61,8 +61,8 @@ def uploadFile(filepath):
     print("  Status:", code)
     try:
         print(f"  Available at {response['self_html_url']}")
-        raise # for testing
-    except (AttributeError, IndexError):
+    except (AttributeError, IndexError), e:
+        print(e)
         print(response)
 
     print(prefix, "Done.")
