@@ -44,7 +44,7 @@ builds = [(build['buildId'], dateutil_parse(build['finished']))
             for build in response['builds'] if 'finished' in build]
 builds.sort(key=itemgetter(-1))
 print(f"Found {len(builds)} builds.")
-for buildId, finished in builds[:-args.buildsToKeep] # keep the newest <buildsToKeep>
+for buildId, finished in builds[:-args.buildsToKeep]: # keep the newest <buildsToKeep>
     print(f"Deleting buildId {buildId} finished at {finished.isoformat()}:", end=" ")
     response, code = makeRequest(delete, baseurl, f"/account/{accountName}/builds/{buildId}",
                                  headers=authHead, verbose=args.verbose)
