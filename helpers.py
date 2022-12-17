@@ -6,6 +6,7 @@
 # file 'LICENSE.txt', which is part of this source code package.
 
 import sys, os
+from pathlib import Path
 import requests # for HTTP requests
 import json
 try:
@@ -48,6 +49,25 @@ def sha256(filename):
         for blk in iter(lambda: fd.read(blkSize), b""):
             algo.update(blk)
     return algo.hexdigest()
+
+def downloadFile(url, targetFilename, progressstepsMB=15):
+    print(f"Downloading {url} to '{targetFilename}':")
+    with requests.get(url, stream=True) as response:
+        response.raise_for_status()
+        dlcount = 0
+        chunksize = 8192
+        progressintval = (progressstepsMB * 1000*1000 // chunksize) * chunksize
+        with open(targetFilename, 'wb') as fh:
+            for chunk in response.iter_content(chunk_size=chunksize):
+                # If you have chunk encoded response uncomment if
+                # and set chunk_size parameter to None.
+                #if chunk:
+                fh.write(chunk)
+                dlcount += chunksize
+                if dlcount % progressintval == 0:
+                    print(f"{dlcount//(1000*1000)} MB")
+    if Path(targetFilename).is_file():
+        print(f"Downloaded '{targetFilename}'.")
 
 class UploadWithProgress:
     """Provides an iterator for uploading files in chunks to allow progress tracking.
