@@ -131,7 +131,7 @@ while ! queueIsEmpty; do
 	getDeps
 done
 
-pacman -U *.zst
+#pacman -U *.zst
 
 # cleanup
 rm -f "$queuefn"
