@@ -10,9 +10,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software.
 
-# For the MSYS2 environments on Windows, this script installs the given package
+# For the MSYS2 environments on Windows, this script retrieves the given package
 # (first cmdline arg) and all its dependencies, based on their package file
-# timestamp. Works only, if the package is still listed in the package repository.
+# timestamp. Works only if the package is still in the package repository.
+#
 # This targets specific (older) versions of packages (compilers like GCC, for example)
 # which are superseeded by newer versions by default and which would have to be
 # installed manually, including with all their (older) dependencies.
@@ -25,16 +26,15 @@ set -e
 
 desiredPckg="$1"
 if [ -z "$desiredPckg" ]; then
-	echo "No package to install given!"
+	echo "No install candidate package given!"
 	exit 1
 fi
 desiredPckg="${MINGW_PACKAGE_PREFIX}-$desiredPckg"
-echo "Attempting to install package '$desiredPckg'."
+echo "Finding dependencies for '$desiredPckg'."
 
 # get the exiting packages
 installedfn="$(mktemp)"
 pacman -Q > "$installedfn"
-
 if grep -qF "^${desiredPckg}" "$installedfn"; then
 	echo "Already installed: $desiredPckg!"
 	exit 0
