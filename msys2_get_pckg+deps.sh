@@ -52,7 +52,7 @@ CURL="curl -# -C -"
 baseurl="https://repo.msys2.org/mingw$MINGW_PREFIX"
 packageidx=index.html
 if [ ! -f "$packageidx" ]; then
-	packageidx="$(mktemp)"
+	#packageidx="$(mktemp)"
 	$CURL -o"$packageidx" -L "$baseurl"
 fi
 echo "Using package index at '$packageidx'."
@@ -135,4 +135,4 @@ pacman -U *.zst
 
 # cleanup
 rm -f "$queuefn"
-rm -f "$packageidx"
+#rm -f "$packageidx"
