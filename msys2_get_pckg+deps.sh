@@ -16,6 +16,10 @@
 # This targets specific (older) versions of packages (compilers like GCC, for example)
 # which are superseeded by newer versions by default and which would have to be
 # installed manually, including with all their (older) dependencies.
+# Example:
+#    sh msys2_get_pckg+deps.sh gcc-13
+#    sh msys2_get_pckg+deps.sh cmake-3.29.2
+#    pacman -U *.zst
 
 set -e
 
