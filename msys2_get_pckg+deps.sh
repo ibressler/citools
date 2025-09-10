@@ -39,12 +39,6 @@ if grep -qF "^${desiredPckg}" "$installedfn"; then
 	echo "Already installed: $desiredPckg!"
 	exit 0
 fi
-
-# install universal packages
-for pckg in make diffutils patch; do
-	grep -q '^make\s' "$installedfn" && continue
-	pacman -S --noconfirm "$pckg"
-done
 rm -f "$installedfn"
 
 CURL="curl -# -C -"
